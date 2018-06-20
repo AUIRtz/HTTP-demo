@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>sign in</title>
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    body { min-height: 100vh; display: flex; justify-content: center; align-content: center; align-items: center; }
+    .wrapper { border: 1px solid #ddd; padding: 30px; }
+    .row>label { display: inline-block; min-width: 4em; padding: 5px 0; }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <h2>登录</h2>
+    <form id="signInForm">
+      <div class="row">
+        <label>邮箱</label>
+        <input type="text" name="email">
+        <span class="error"></span>
+      </div>
+      <div class="row">
+        <label>密码</label>
+        <input type="password" name="password">
+        <span class="error"></span>        
+      </div>
+      <div class="row">
+        <input type="submit" name="submit" value="登录">
+      </div>
+    </form>
+  </div>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    var $form = $('#signInForm')
+    let hash = {}
+    $form.on('submit', (aim) => {
+      aim.preventDefault()
+      let need = ['email', 'password']
+      need.forEach((name) => {
+        let value = $form.find(`[name = ${name}]`).val()
+        hash[name] = value
+      })
+      $form.find('.error').each((index, span) =>{
+        $(span).text('')
+      })
+      if(hash['email'] = ''){
+        $form.find('[name = "email"]').siblings('.error')
+          .text('请填写邮箱')
+        return
+      }
+      $.post('sign_in', hash)
+        .then((response) => {
+          window.location.href = '/'
+        }, (request) =>{
+          alert('邮箱与密码不匹配')
+          }
+        })
+    })  
+  </script>
+</body>
+
+</html>
